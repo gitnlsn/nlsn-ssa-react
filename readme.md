@@ -1,3 +1,7 @@
+[![Build](https://github.com/gitnlsn/nlsn-ssa-react/actions/workflows/build.yml/badge.svg)](https://github.com/gitnlsn/nlsn-ssa-react/actions/workflows/build.yml)
+[![Tests](https://github.com/gitnlsn/nlsn-ssa-react/actions/workflows/tests.yml/badge.svg)](https://github.com/gitnlsn/nlsn-ssa-react/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/gitnlsn/nlsn-ssa-react/branch/master/graph/badge.svg?token=0gyw13RlNP)](https://codecov.io/gh/gitnlsn/nlsn-ssa-react)
+
 # Description
 
 Asynchronous events may be triggered almost simultaneously triggering callbacks that changes the same state leading to undesidered states.
