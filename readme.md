@@ -1,6 +1,7 @@
 [![Build](https://github.com/gitnlsn/nlsn-ssa-react/actions/workflows/build.yml/badge.svg)](https://github.com/gitnlsn/nlsn-ssa-react/actions/workflows/build.yml)
 [![Tests](https://github.com/gitnlsn/nlsn-ssa-react/actions/workflows/tests.yml/badge.svg)](https://github.com/gitnlsn/nlsn-ssa-react/actions/workflows/tests.yml)
 [![codecov](https://codecov.io/gh/gitnlsn/nlsn-ssa-react/branch/master/graph/badge.svg?token=0gyw13RlNP)](https://codecov.io/gh/gitnlsn/nlsn-ssa-react)
+[![npm version](https://badge.fury.io/js/nlsn-ssa-react.svg)](https://badge.fury.io/js/nlsn-ssa-react)
 
 # Description
 
