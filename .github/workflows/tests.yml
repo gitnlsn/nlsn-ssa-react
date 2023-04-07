@@ -1,0 +1,19 @@
+# Docs: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Tests
+
+on:
+  push:
+    branches: ["master", "develop"]
+  pull_request:
+    branches: ["master", "develop"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: yarn
+      - run: npx jest --coverage
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3

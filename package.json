@@ -1,0 +1,43 @@
+{
+  "name": "nlsn-ssa-react",
+  "version": "0.0.1",
+  "description": "Synchronizes simultaneous asynchronous events in React",
+  "author": "nelson kenzo tamashiro <nelsonkenzotamashiro@gmail.com>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "keywords": [
+    "synchronize",
+    "simultaneous",
+    "asynchronous",
+    "events",
+    "timeLapse",
+    "time",
+    "lapse"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gitnlsn/nlsn-ssa-react"
+  },
+  "files": [
+    "./dist/**",
+    "./readme.md",
+    "./LICENSE",
+    "./package.json"
+  ],
+  "devDependencies": {
+    "@testing-library/react-hooks": "^8.0.1",
+    "@types/jest": "^29.5.0",
+    "@types/react": "17.0.44",
+    "jest": "^29.5.0",
+    "jest-environment-jsdom": "^29.5.0",
+    "react": "17.0.2",
+    "react-dom": "^17.0.2",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.3"
+  },
+  "peerDependencies": {
+    "@types/react": "^16.9.0 || ^17.0.0",
+    "react": "^16.9.0 || ^17.0.0",
+    "react-dom": "^16.9.0 || ^17.0.0"
+  }
+}
