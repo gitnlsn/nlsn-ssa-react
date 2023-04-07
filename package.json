@@ -1,6 +1,6 @@
 {
   "name": "nlsn-ssa-react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Synchronizes simultaneous asynchronous events in React",
   "author": "nelson kenzo tamashiro <nelsonkenzotamashiro@gmail.com>",
   "license": "MIT",
