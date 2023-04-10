@@ -10,6 +10,98 @@ describe("useSynchronizeAsyncEvents", () => {
     jest.clearAllMocks()
   })
 
+  describe("Usage", () => {
+    it("using types demo", () => {
+      const events = {
+        sum: (a: number, b: number) => a + b,
+        log: (text: string) => console.log(text),
+        mocked: jest.fn(),
+        anotherMocked: jest.fn(),
+      }
+
+      const { result } = renderHook(() =>
+        useSynchronizeSimultaneousAsynchronousEvents({
+          events,
+          timeLapse: 100,
+          synchronizeHandle: (capturedEvents) => {
+            if (capturedEvents.length === 0) {
+              return
+            }
+
+            const firstEvent = capturedEvents[0]
+
+            // At the mean time, we gotta force the type given we know the function name.
+            const functionName = firstEvent.id
+
+            switch (functionName) {
+              case "log":
+                const logProps = capturedEvents[0].props as Parameters<
+                  typeof events.log
+                >
+                const logCallback = capturedEvents[0]
+                  .callback as typeof events.log
+                // const logProps: [text: string]
+                // const logCallback: (text: string) => void
+
+                logCallback(...logProps)
+                break
+
+              case "sum":
+                const sumProps = capturedEvents[0].props as Parameters<
+                  typeof events.sum
+                >
+                const sumCallback = capturedEvents[0]
+                  .callback as typeof events.sum
+                // const sumProps: [a: any, b: any]
+                // const sumCallback: (a: any, b: any) => any
+
+                sumCallback(...sumProps)
+                break
+
+              case "mocked":
+                const mockedProps = capturedEvents[0].props as Parameters<
+                  typeof events.mocked
+                >
+                const mockedCallback = capturedEvents[0]
+                  .callback as typeof events.mocked
+                // const mockedProps: any
+                // const sumCallback: (a: any, b: any) => any
+
+                mockedCallback(...mockedProps)
+                break
+
+              case "anotherMocked":
+                const anotherMockedProps = capturedEvents[0]
+                  .props as Parameters<typeof events.mocked>
+                const anotherMockedCallback = capturedEvents[0]
+                  .callback as typeof events.mocked
+                // const mockedProps: any
+                // const sumCallback: (a: any, b: any) => any
+
+                anotherMockedCallback(...mockedProps)
+                break
+            }
+          },
+        })
+      )
+
+      act(() => {
+        result.current.mocked()
+      })
+
+      act(() => {
+        result.current.anotherMocked()
+      })
+
+      act(() => {
+        jest.runAllTimers()
+      })
+
+      expect(events.mocked).toHaveBeenCalledTimes(1)
+      expect(events.anotherMocked).toHaveBeenCalledTimes(0)
+    })
+  })
+
   describe("wrapper to add events to stack", () => {
     it("should handle empty events array", () => {
       expect(() => {
@@ -118,9 +210,9 @@ describe("useSynchronizeAsyncEvents", () => {
       const events = { someEvent: jest.fn(), otherEvent: jest.fn() }
 
       const synchronizeHandle = jest
-        .fn<void, [Array<IdentifiedEvent<string, Function>>]>()
+        .fn<void, [Array<IdentifiedEvent<string, (...props: any) => any>>]>()
         .mockImplementationOnce((events) =>
-          events.forEach((event) => event.callback())
+          events.forEach((event) => event.callback(event.props))
         )
 
       const { result } = renderHook(() =>

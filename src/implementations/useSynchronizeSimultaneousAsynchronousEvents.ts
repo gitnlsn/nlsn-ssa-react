@@ -17,22 +17,22 @@ import { UseSynchronizeAsyncEventsProps } from "../interfaces/UseSynchronizeAsyn
  * Default synchronizeHandle triggers the first event on the stack.
  */
 export const useSynchronizeSimultaneousAsynchronousEvents = <
-  EventsObject extends Record<string, Function>
+  EventsObject extends Record<string | number | symbol, (...args: any) => any>
 >({
   events,
   timeLapse,
   synchronizeHandle = defaultSynchronizeHandle,
 }: UseSynchronizeAsyncEventsProps<EventsObject>): EventsObject => {
-  const [capturedEvents, setCapturedEvents] = useState<
-    Array<IdentifiedEvent<string, (props: unknown[]) => void>>
-  >([])
+  type CapturedEvent = IdentifiedEvent<string, EventsObject[keyof EventsObject]>
+
+  const [capturedEvents, setCapturedEvents] = useState<Array<CapturedEvent>>([])
 
   const clearCapturedEvents = useCallback(() => {
     setCapturedEvents([])
   }, [setCapturedEvents])
 
   const addEvent = useCallback(
-    (event: IdentifiedEvent<string, (props: unknown[]) => void>) => {
+    (event: CapturedEvent) => {
       setCapturedEvents((current) => [...current, event])
     },
     [setCapturedEvents]
@@ -45,10 +45,11 @@ export const useSynchronizeSimultaneousAsynchronousEvents = <
         const callback = events[next as keyof EventsObject]
         return {
           ...acc,
-          [next as keyof EventsObject]: (...props: unknown[]) =>
+          [next as keyof EventsObject]: (...props: any) =>
             addEvent({
               id: next,
-              callback: () => callback(...props),
+              callback,
+              props,
             }),
         }
       }, {} as EventsObject),

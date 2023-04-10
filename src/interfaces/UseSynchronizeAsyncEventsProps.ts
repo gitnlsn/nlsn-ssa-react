@@ -2,9 +2,12 @@ import { SynchronizeHandle } from "./SynchronizeHandle"
 import { TimeLapse } from "./TimeLapse"
 
 export interface UseSynchronizeAsyncEventsProps<
-  EventsObject extends Record<string, Function>
+  EventsObject extends Record<string | number | symbol, (...args: any) => any>
 > {
   events: EventsObject
   timeLapse: TimeLapse
-  synchronizeHandle?: SynchronizeHandle<string, (props: unknown[]) => void>
+  synchronizeHandle?: SynchronizeHandle<
+    keyof EventsObject,
+    EventsObject[keyof EventsObject]
+  >
 }

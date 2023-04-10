@@ -1,10 +1,8 @@
-import { EventCallback } from "./EventCallback"
-import { Identifier } from "./Identifier"
-
 export interface IdentifiedEvent<
-  Tag extends string,
-  CallbackSignature extends Function
+  Tag extends string | number | symbol,
+  CallbackSignature extends (...args: any) => any
 > {
-  id: Identifier<Tag>
-  callback: EventCallback<CallbackSignature>
+  id: Tag
+  callback: CallbackSignature
+  props?: Parameters<CallbackSignature>
 }
