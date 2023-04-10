@@ -28,35 +28,90 @@ yarn add nlsn-ssa-react
 Then you can use `SSA` with the following syntax.
 
 ```ts
-import { useSSA, SynchronizeHandle } from "nlsn-ssa-react"
+import { renderHook, act } from "@testing-library/react-hooks"
+import { useSSA } from "nlsn-ssa-react"
 
-const customHook = () => {
-  const onClick = () => console.log("clicked")
-  const onFocus = () => console.log("focus")
-
-  const defaultSynchronizeHandle: SynchronizeHandle = (events) => {
-    if (events.length === 0) {
-      return
-    }
-
-    const firstEvent = events[0]
-
-    firstEvent.callback()
+it("using types demo", () => {
+  const events = {
+    sum: (a: number, b: number) => a + b,
+    log: (text: string) => console.log(text),
+    mocked: jest.fn(),
+    anotherMocked: jest.fn(),
   }
 
-  const { onClick: onClickSynced, onFocus: onFocusSynced } = useSSA({
-    timeLapse: 100,
-    events: {
-      onClick,
-      onFocus,
-    },
+  const { result } = renderHook(() =>
+    useSSA({
+      events,
+      timeLapse: 100,
+      synchronizeHandle: (capturedEvents) => {
+        if (capturedEvents.length === 0) {
+          return
+        }
+
+        const firstEvent = capturedEvents[0]
+
+        // At the mean time, we gotta force the type given we know the function name.
+        const functionName = firstEvent.id
+
+        switch (functionName) {
+          case "log":
+            const logProps = firstEvent.props as Parameters<typeof events.log>
+            const logCallback = firsetEvent.callback as typeof events.log
+            // const logProps: [text: string]
+            // const logCallback: (text: string) => void
+
+            logCallback(...logProps)
+            break
+
+          case "sum":
+            const sumProps = firstEvent.props as Parameters<typeof events.sum>
+            const sumCallback = firsetEvent.callback as typeof events.sum
+            // const sumProps: [a: any, b: any]
+            // const sumCallback: (a: any, b: any) => any
+
+            sumCallback(...sumProps)
+            break
+
+          case "mocked":
+            const mockedProps = firsetEvent.props as Parameters<
+              typeof events.mocked
+            >
+            const mockedCallback = firstEvent.callback as typeof events.mocked
+            // const mockedProps: any
+            // const sumCallback: (a: any, b: any) => any
+
+            mockedCallback(...mockedProps)
+            break
+
+          case "anotherMocked":
+            const anotherMockedProps = firstEvent.props as Parameters<
+              typeof events.mocked
+            >
+            const anotherMockedCallback =
+              firsetEvent.callback as typeof events.mocked
+            // const mockedProps: any
+            // const sumCallback: (a: any, b: any) => any
+
+            anotherMockedCallback(...mockedProps)
+            break
+        }
+      },
+    })
+  )
+
+  act(() => {
+    result.current.mocked()
   })
 
-  return {
-    // when onFocus and onClick are called simultaneousy
-    // under the 100ms time lapse, only the first will be triggered
-    onClick: onClickSynced,
-    onFocus: onFocusSynced,
-  }
-}
+  act(() => {
+    result.current.anotherMocked()
+  })
+
+  act(() => {
+    jest.runAllTimers()
+  })
+
+  expect(events.mocked).toHaveBeenCalledTimes(1)
+  expect(events.anotherMocked).toHaveBeenCalledTimes(0)
+})
 ```

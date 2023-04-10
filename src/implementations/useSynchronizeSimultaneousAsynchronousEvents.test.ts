@@ -1,7 +1,6 @@
 import { renderHook, act } from "@testing-library/react-hooks"
 import { useSynchronizeSimultaneousAsynchronousEvents } from "./useSynchronizeSimultaneousAsynchronousEvents"
 import { IdentifiedEvent } from "../interfaces/IdentifiedEvent"
-import { SynchronizeHandle } from "../interfaces/SynchronizeHandle"
 
 jest.useFakeTimers()
 
@@ -35,11 +34,10 @@ describe("useSynchronizeAsyncEvents", () => {
 
             switch (functionName) {
               case "log":
-                const logProps = capturedEvents[0].props as Parameters<
+                const logProps = firstEvent.props as Parameters<
                   typeof events.log
                 >
-                const logCallback = capturedEvents[0]
-                  .callback as typeof events.log
+                const logCallback = firstEvent.callback as typeof events.log
                 // const logProps: [text: string]
                 // const logCallback: (text: string) => void
 
@@ -47,11 +45,10 @@ describe("useSynchronizeAsyncEvents", () => {
                 break
 
               case "sum":
-                const sumProps = capturedEvents[0].props as Parameters<
+                const sumProps = firstEvent.props as Parameters<
                   typeof events.sum
                 >
-                const sumCallback = capturedEvents[0]
-                  .callback as typeof events.sum
+                const sumCallback = firstEvent.callback as typeof events.sum
                 // const sumProps: [a: any, b: any]
                 // const sumCallback: (a: any, b: any) => any
 
@@ -59,11 +56,11 @@ describe("useSynchronizeAsyncEvents", () => {
                 break
 
               case "mocked":
-                const mockedProps = capturedEvents[0].props as Parameters<
+                const mockedProps = firstEvent.props as Parameters<
                   typeof events.mocked
                 >
-                const mockedCallback = capturedEvents[0]
-                  .callback as typeof events.mocked
+                const mockedCallback =
+                  firstEvent.callback as typeof events.mocked
                 // const mockedProps: any
                 // const sumCallback: (a: any, b: any) => any
 
@@ -71,10 +68,11 @@ describe("useSynchronizeAsyncEvents", () => {
                 break
 
               case "anotherMocked":
-                const anotherMockedProps = capturedEvents[0]
-                  .props as Parameters<typeof events.mocked>
-                const anotherMockedCallback = capturedEvents[0]
-                  .callback as typeof events.mocked
+                const anotherMockedProps = firstEvent.props as Parameters<
+                  typeof events.mocked
+                >
+                const anotherMockedCallback =
+                  firstEvent.callback as typeof events.mocked
                 // const mockedProps: any
                 // const sumCallback: (a: any, b: any) => any
 
