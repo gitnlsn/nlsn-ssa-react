@@ -18,6 +18,11 @@
     "type": "git",
     "url": "https://github.com/gitnlsn/nlsn-ssa-react"
   },
+  "release": {
+    "branches": [
+      "master"
+    ]
+  },
   "files": [
     "./dist/**",
     "./readme.md",
