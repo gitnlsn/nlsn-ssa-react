@@ -1,6 +1,6 @@
 {
   "name": "nlsn-ssa-react",
-  "version": "1.0.1",
+  "version": "0.0.0-development",
   "description": "Synchronizes simultaneous asynchronous events in React",
   "author": "nelson kenzo tamashiro <nelsonkenzotamashiro@gmail.com>",
   "license": "MIT",
@@ -38,11 +38,15 @@
     "react": "17.0.2",
     "react-dom": "^17.0.2",
     "ts-jest": "^29.1.0",
-    "typescript": "^5.0.3"
+    "typescript": "^5.0.3",
+    "semantic-release": "^21.0.1"
   },
   "peerDependencies": {
     "@types/react": "^16.9.0 || ^17.0.0",
     "react": "^16.9.0 || ^17.0.0",
     "react-dom": "^16.9.0 || ^17.0.0"
+  },
+  "scripts": {
+    "semantic-release": "semantic-release"
   }
 }
